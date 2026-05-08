@@ -191,7 +191,9 @@ BOOL g_EnableLogging;
     //show donate message
 	if ( ![[NSUserDefaults standardUserDefaults] boolForKey: DontShowDonationMessage] )
 	{
-		[NSBundle loadNibNamed: @"DonationPanel" owner:self];
+		NSArray *topLevelObjects = nil;
+		[[NSBundle mainBundle] loadNibNamed: @"DonationPanel" owner: self topLevelObjects: &topLevelObjects];
+		_donationPanelNibTopLevelObjects = [topLevelObjects retain];
 		[_donationPanel setWorksWhenModal: YES];
 	}
 	

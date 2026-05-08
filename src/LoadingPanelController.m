@@ -22,10 +22,12 @@
 - (id) init
 {
 	self = [super init];
-	
+
     //load Nib with progress panel
-	if ( ![NSBundle loadNibNamed: @"LoadingPanel" owner: self] )
+	NSArray *topLevelObjects = nil;
+	if ( ![[NSBundle mainBundle] loadNibNamed: @"LoadingPanel" owner: self topLevelObjects: &topLevelObjects] )
 		NSAssert( NO, @"couldn't load LoadingPanel.nib" );
+	_nibTopLevelObjects = [topLevelObjects retain];
 	
 	[_loadingProgressIndicator setUsesThreadedAnimation: NO];
     [_loadingProgressIndicator startAnimation: self];
@@ -44,10 +46,12 @@
 - (id) initAsSheetForWindow: (NSWindow*) window
 {
 	self = [super init];
-	
+
     //load Nib with progress panel
-	if ( ![NSBundle loadNibNamed: @"LoadingPanel" owner: self] )
+	NSArray *topLevelObjects = nil;
+	if ( ![[NSBundle mainBundle] loadNibNamed: @"LoadingPanel" owner: self topLevelObjects: &topLevelObjects] )
 		NSAssert( NO, @"couldn't load LoadingPanel.nib" );
+	_nibTopLevelObjects = [topLevelObjects retain];
 	
 	[NSApp beginSheet: _loadingPanel
 	   modalForWindow: window
@@ -74,7 +78,8 @@
 {
 	if ( _loadingPanel != nil )
 		[self close];
-	
+
+	[_nibTopLevelObjects release];
 	[super dealloc];
 }
 
