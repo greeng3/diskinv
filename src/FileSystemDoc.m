@@ -84,7 +84,7 @@ NSString *CollectFileKindStatisticsCanceledException = @"CollectFileKindStatisti
 //# of files of this kind
 - (unsigned) fileCount
 {
-	return [_items count];
+	return (unsigned)[_items count];
 }
 
 //sum of sizes of files of this kind
@@ -752,7 +752,7 @@ NSString *OldItem = @"OldItem";
         NSUInteger itemIndex = [_zoomStack indexOfObjectIdenticalTo: item];
         if ( itemIndex != NSNotFound )
         {
-            unsigned itemsToRemove = [_zoomStack count] - itemIndex - 1;
+            NSUInteger itemsToRemove = [_zoomStack count] - itemIndex - 1;
             for ( ; itemsToRemove > 0; itemsToRemove-- )
                 [_zoomStack removeLastObject];
         }

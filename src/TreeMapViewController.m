@@ -112,7 +112,7 @@
 			return _freeSpaceItem;
 	}
 	else
-		return [fsItem childAtIndex: index];
+		return [fsItem childAtIndex: (unsigned)index];
 }
 
 - (BOOL) treeMapView: (TreeMapView*) view isNode: (id) item
