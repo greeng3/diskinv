@@ -566,13 +566,13 @@ NSString *OldItem = @"OldItem";
         NSString *msg = [NSString stringWithFormat: @"\"%@\" does not exist any more.", [[self rootItem] displayPath]];
         NSString *subMsg = NSLocalizedString( @"The folder will remain visible in Disk Inventory X, but the files cannot be accessed (e.g. shown in the Finder).",@"");
         
-        NSBeginInformationalAlertSheet( msg,
-                                       NSLocalizedString(@"OK",@""),
-                                       nil, nil,
-                                       [[[self windowControllers] objectAtIndex: 0] window],
-                                       nil, NULL, NULL, nil,
-                                       @"%@",
-                                       subMsg );
+        NSAlert *missingAlert = [[NSAlert alloc] init];
+        [missingAlert setAlertStyle: NSAlertStyleInformational];
+        [missingAlert setMessageText: msg];
+        [missingAlert setInformativeText: subMsg];
+        [missingAlert addButtonWithTitle: NSLocalizedString(@"OK",@"")];
+        [missingAlert beginSheetModalForWindow: [[[self windowControllers] objectAtIndex: 0] window] completionHandler: nil];
+        [missingAlert release];
 
 		return;
 	}
@@ -612,13 +612,13 @@ NSString *OldItem = @"OldItem";
 		else
 		{
 			//error
-            NSBeginInformationalAlertSheet( NSLocalizedString( @"The folder's content could not be loaded.", @""),
-                                           NSLocalizedString(@"OK",@""),
-                                           nil, nil,
-                                           [[[self windowControllers] objectAtIndex: 0] window],
-                                           nil, NULL, NULL, nil,
-                                           @"%@",
-                                           [localException reason] );
+            NSAlert *failAlert = [[NSAlert alloc] init];
+            [failAlert setAlertStyle: NSAlertStyleInformational];
+            [failAlert setMessageText: NSLocalizedString( @"The folder's content could not be loaded.", @"")];
+            [failAlert setInformativeText: [localException reason] ?: @""];
+            [failAlert addButtonWithTitle: NSLocalizedString(@"OK",@"")];
+            [failAlert beginSheetModalForWindow: [[[self windowControllers] objectAtIndex: 0] window] completionHandler: nil];
+            [failAlert release];
 
 		}
 		NS_VOIDRETURN;

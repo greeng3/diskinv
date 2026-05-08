@@ -240,21 +240,25 @@
 		NSString *msg = [NSString stringWithFormat: NSLocalizedString(@"The item \"%@\" could not be moved to the trash.",@""),
 													[selectedItem displayName]];
 
-		NSBeginAlertSheet( msg,
-                          NSLocalizedString(@"No",@""),
-                          NSLocalizedString(@"Yes",@""),
-						  nil,
-						  [self window],
-						  self,
-						  nil,
-						  @selector(moveToTrashSheetDidDismiss: returnCode: contextInfo:),
-						  selectedItem,
-						  @"%@", NSLocalizedString(@"Would you like to delete it immediately?",@""));
+		NSAlert *alert = [[NSAlert alloc] init];
+		[alert setMessageText: msg];
+		[alert setInformativeText: NSLocalizedString(@"Would you like to delete it immediately?",@"")];
+		[alert addButtonWithTitle: NSLocalizedString(@"No",@"")];	//NSAlertFirstButtonReturn
+		[alert addButtonWithTitle: NSLocalizedString(@"Yes",@"")];	//NSAlertSecondButtonReturn
+		FSItem *capturedItem = [selectedItem retain];
+		[alert beginSheetModalForWindow: [self window]
+					  completionHandler: ^(NSModalResponse returnCode) {
+			[self moveToTrashSheetDidDismiss: nil
+								  returnCode: (int)returnCode
+								 contextInfo: capturedItem];
+			[capturedItem release];
+		}];
+		[alert release];
 	}
 	else
 	{
 		[self moveToTrashSheetDidDismiss: nil
-							  returnCode: NSAlertAlternateReturn
+							  returnCode: NSAlertSecondButtonReturn
 							 contextInfo: selectedItem];
 	}
 }
@@ -340,7 +344,11 @@
 	uint64_t doneTime = getTime();
 	
 	NSString *msg = [NSString stringWithFormat: @"rendering %u times took %.2f seconds", count, subtractTime(doneTime, startTime)];
-	NSBeginInformationalAlertSheet( msg, nil, nil, nil, [_splitter window], nil, nil, nil, nil, @"" );
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert setAlertStyle: NSAlertStyleInformational];
+	[alert setMessageText: msg];
+	[alert beginSheetModalForWindow: [_splitter window] completionHandler: nil];
+	[alert release];
 }
 
 - (IBAction) performLayoutBenchmark:(id)sender
@@ -354,7 +362,11 @@
 	uint64_t doneTime = getTime();
 	
 	NSString *msg = [NSString stringWithFormat: @"layout calculation %u times took %.2f seconds", count, subtractTime(doneTime, startTime)];
-	NSBeginInformationalAlertSheet( msg, nil, nil, nil, [_splitter window], nil, nil, nil, nil, @"" );
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert setAlertStyle: NSAlertStyleInformational];
+	[alert setMessageText: msg];
+	[alert beginSheetModalForWindow: [_splitter window] completionHandler: nil];
+	[alert release];
 }
 
 #pragma mark -----------------UI elment validation-----------------------
@@ -605,7 +617,7 @@
 						 returnCode: (int) returnCode
 						contextInfo: (void*) contextInfo
 {
-	if ( returnCode != NSAlertAlternateReturn )
+	if ( returnCode != NSAlertSecondButtonReturn )
 		return;
 	
 	FileSystemDoc *doc = [self document];
@@ -643,13 +655,13 @@
         NSString *msg = [NSString stringWithFormat: NSLocalizedString(@"\"%@\" cannot be moved to the trash by Disk Inventory X.",@""), [selectedItem displayName] ];
         NSString *subMsg = error.localizedFailureReason; //NSLocalizedString( @"Maybe you do not have sufficient access privileges.", @"" );
         
-        NSBeginInformationalAlertSheet( msg,
-                                       NSLocalizedString(@"OK",@""),
-                                       nil, nil,
-                                       [self window],
-                                       nil, NULL, NULL, nil,
-                                       @"%@",
-                                       subMsg );
+        NSAlert *failAlert = [[NSAlert alloc] init];
+        [failAlert setAlertStyle: NSAlertStyleInformational];
+        [failAlert setMessageText: msg];
+        [failAlert setInformativeText: subMsg ?: @""];
+        [failAlert addButtonWithTitle: NSLocalizedString(@"OK",@"")];
+        [failAlert beginSheetModalForWindow: [self window] completionHandler: nil];
+        [failAlert release];
  	}
 }
 
