@@ -85,7 +85,7 @@
 	poofEffectPoint = [view convertPoint: poofEffectPoint toView: nil];
 	
 	//convert window to screen coords
-	poofEffectPoint = [[view window] convertBaseToScreen: poofEffectPoint];
+	poofEffectPoint = [[view window] convertPointToScreen: poofEffectPoint];
 	
 	NSSize size = NSMakeSize(NSWidth(rect), NSHeight(rect));
 	
@@ -107,7 +107,7 @@
 		[_splitter setVertical: NO];		
 	}
 	
-	[_splitter setPositionAutosaveName: @"MainWindowSplitter"];
+	[_splitter setAutosaveName: @"MainWindowSplitter"];
 	
     [_kindsDrawer toggle: self];
 	//[_selectionListDrawer toggle: self];

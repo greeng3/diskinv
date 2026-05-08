@@ -89,7 +89,7 @@
 			}
 		}
 		
-		[_additionalAppURLs sortOnAttribute: @selector(name) usingSelector: @selector(caseInsensitiveCompare:)];
+		[_additionalAppURLs sortUsingDescriptors: @[[NSSortDescriptor sortDescriptorWithKey: @"name" ascending: YES selector: @selector(caseInsensitiveCompare:)]]];
 	}
 	
 	return _additionalAppURLs;

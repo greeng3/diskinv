@@ -825,7 +825,7 @@ NSString* FSItemLoadingFailedException = @"FSItemLoadingFailedException";
 	{
 		if ([uti isEqualToString:(__bridge NSString*)kUTTypeFlatRTFD])
 		{
-			NSFileWrapper *tempRTFDData = [[[NSFileWrapper alloc] initWithPath:path] autorelease];
+			NSFileWrapper *tempRTFDData = [[[NSFileWrapper alloc] initWithURL:[NSURL fileURLWithPath:path] options:0 error:NULL] autorelease];
 			[pboard setData:[tempRTFDData serializedRepresentation] forType:NSRTFDPboardType];
 		}
 	}
