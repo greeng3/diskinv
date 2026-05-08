@@ -113,6 +113,8 @@
 	//[_selectionListDrawer toggle: self];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (NSDrawer*) kindStatisticsDrawer
 {
 	return _kindsDrawer;
@@ -122,6 +124,7 @@
 {
 	return _selectionListDrawer;
 }
+#pragma clang diagnostic pop
 
 #pragma mark -----------------menu and toolbar actions-----------------------
 
@@ -448,13 +451,19 @@
     }
     else if ( menuAction == @selector(toggleFileKindsDrawer:) )
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         SET_TITLE_AND_IMAGE( [_kindsDrawer state] == NSDrawerClosedState,
 							 @"Show File Kind Statistics", @"Hide File Kind Statistics" );
+#pragma clang diagnostic pop
     }
     else if ( menuAction == @selector(toggleSelectionListDrawer:) )
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         SET_TITLE( [_selectionListDrawer state] == NSDrawerClosedState,
 							 @"Show Selection List", @"Hide Selection List" );
+#pragma clang diagnostic pop
     }
     else if ( menuAction == @selector(selectParentItem:) )
     {
